@@ -1,0 +1,3062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Dispute Resolution Platform - Enhanced</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fc;
+            color: #1a202c;
+            line-height: 1.6;
+        }
+        
+        .top-bar {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .top-bar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo { display: flex; align-items: center; gap: 15px; }
+        .logo-icon { font-size: 2em; }
+        .logo-text h1 { font-size: 1.5em; font-weight: 600; }
+        .logo-text p { font-size: 0.85em; opacity: 0.9; margin-top: 2px; }
+        
+        .demo-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+        
+        .language-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .lang-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .lang-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .lang-btn.active {
+            background: white;
+            color: #1e3a8a;
+            border-color: white;
+        }
+        
+        [dir="rtl"] {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        [dir="rtl"] .timeline {
+            padding-left: 0;
+            padding-right: 40px;
+        }
+        
+        [dir="rtl"] .timeline-item::before {
+            left: auto;
+            right: -33px;
+        }
+        
+        [dir="rtl"] .timeline-item::after {
+            left: auto;
+            right: -27px;
+        }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px; }
+        
+        .nav-tabs {
+            background: white;
+            border-radius: 12px;
+            padding: 8px;
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .nav-tab {
+            flex: 1;
+            padding: 16px 24px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+        
+        .nav-tab:hover { background: #f1f5f9; color: #1e3a8a; }
+        
+        .nav-tab.active {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25);
+        }
+        
+        .screen {
+            display: none;
+        }
+        
+        .screen.active { display: block; }
+        
+        .screen-header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .screen-header h2 {
+            font-size: 1.75em;
+            color: #1a202c;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .screen-header p { color: #64748b; }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+        
+        .metric-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 24px;
+            border-left: 4px solid #1e3a8a;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .metric-value {
+            font-size: 2.25em;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 8px;
+        }
+        
+        .metric-label { color: #64748b; font-size: 0.95em; }
+        
+        .alert {
+            padding: 18px 24px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid;
+        }
+        
+        .alert-success { background: #f0fdf4; border-color: #22c55e; color: #166534; }
+        .alert-info { background: #eff6ff; border-color: #3b82f6; color: #1e40af; }
+        .alert-warning { background: #fffbeb; border-color: #f59e0b; color: #92400e; }
+        .alert-danger { background: #fef2f2; border-color: #ef4444; color: #991b1b; }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+        
+        .card h3 {
+            font-size: 1.25em;
+            margin-bottom: 20px;
+            color: #1a202c;
+        }
+        
+        .form-group { margin-bottom: 24px; }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .form-group select,
+        .form-group textarea,
+        .form-group input[type="text"],
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+        }
+        
+        .form-group select:focus,
+        .form-group textarea:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .btn {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2);
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+        }
+        
+        .btn-danger {
+            background: #ef4444;
+        }
+        
+        .btn-success {
+            background: #22c55e;
+        }
+        
+        .success-message {
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .success-message h3 {
+            color: #166534;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        
+        .dispute-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .dispute-item {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .dispute-item:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+        
+        .dispute-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .dispute-id {
+            font-weight: 700;
+            color: #1a202c;
+            font-size: 1.1em;
+        }
+        
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-analyzing { background: #dbeafe; color: #1e40af; }
+        .status-resolved { background: #d1fae5; color: #065f46; }
+        .status-manual-review { background: #fce7f3; color: #9f1239; }
+        
+        .ai-analysis {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+        
+        .ai-analysis h4 {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .analysis-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .analysis-item strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .analysis-value {
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+        
+        .confidence-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .confidence-fill {
+            height: 100%;
+            background: #22c55e;
+            border-radius: 5px;
+            transition: width 1s ease-out;
+        }
+        
+        .image-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .image-box {
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .image-box h4 {
+            margin-bottom: 12px;
+            color: #374151;
+        }
+        
+        .image-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+        
+        .preview-img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 6px;
+            background: #f3f4f6;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+            margin: 25px 0;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 25px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #3b82f6;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -27px;
+            top: 19px;
+            width: 2px;
+            height: calc(100% - 14px);
+            background: #e5e7eb;
+        }
+        
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        
+        .timeline-content {
+            background: #f9fafb;
+            padding: 12px 16px;
+            border-radius: 8px;
+        }
+        
+        .timeline-time {
+            font-size: 0.85em;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .evidence-match {
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .evidence-mismatch {
+            background: #fef2f2;
+            border: 2px solid #ef4444;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            width: 100%;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .modal-close {
+            background: #e5e7eb;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.3em;
+            color: #6b7280;
+        }
+        
+        .modal-close:hover {
+            background: #cbd5e0;
+        }
+        
+        .modal-body {
+            line-height: 1.8;
+            color: #374151;
+        }
+        
+        .modal-body h3 {
+            margin: 20px 0 10px 0;
+            color: #1a202c;
+        }
+        
+        .modal-body p {
+            margin-bottom: 15px;
+        }
+        
+        .modal-body ul {
+            margin: 15px 0 15px 25px;
+        }
+        
+        .modal-body li {
+            margin-bottom: 8px;
+        }
+        
+        .step-indicator {
+            flex: 1;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .step-indicator.active {
+            background: #3b82f6;
+        }
+        
+        .step-indicator.completed {
+            background: #22c55e;
+        }
+        
+        .demo-screen {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+        
+        .demo-screen h4 {
+            color: #1a202c;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+        
+        .demo-action {
+            background: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        
+        .demo-system {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        
+        .demo-warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        
+        .demo-evidence {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .demo-evidence-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 120px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2em;
+        }
+        
+        .risk-score {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        
+        .risk-low { background: #d1fae5; color: #065f46; }
+        .risk-medium { background: #fef3c7; color: #92400e; }
+        .risk-high { background: #fecaca; color: #991b1b; }
+        
+        .buyer-profile {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .buyer-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .buyer-stat {
+            text-align: center;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .buyer-stat-value {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #1e3a8a;
+        }
+        
+        .buyer-stat-label {
+            font-size: 0.85em;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="logo">
+                <div class="logo-icon">🛡️</div>
+                <div class="logo-text">
+                    <h1 data-i18n="app_title">Delivery Dispute Resolution Platform</h1>
+                    <p data-i18n="app_subtitle">AI-Powered Arbitration & Risk Management</p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <div class="language-selector">
+                    <button class="lang-btn active" onclick="changeLanguage('en')">EN</button>
+                    <button class="lang-btn" onclick="changeLanguage('fr')">FR</button>
+                    <button class="lang-btn" onclick="changeLanguage('ar')">AR</button>
+                </div>
+                <div class="demo-badge" data-i18n="demo_badge">ENHANCED DEMO</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showScreen('delivery-admin', this)" data-i18n="tab_delivery">🚚 Delivery Company</button>
+            <button class="nav-tab" onclick="showScreen('merchant', this)" data-i18n="tab_merchant">🏪 Merchant</button>
+            <button class="nav-tab" onclick="showScreen('buyer', this)" data-i18n="tab_buyer">👤 Buyer Dispute</button>
+            <button class="nav-tab" onclick="showScreen('tracking', this)" data-i18n="tab_tracking">📍 Track Order</button>
+            <button class="nav-tab" onclick="showScreen('platform-admin', this)" data-i18n="tab_admin">⚙️ Platform Admin</button>
+            <button class="nav-tab" onclick="showScreen('analytics', this)" data-i18n="tab_analytics">📊 Analytics</button>
+            <button class="nav-tab" onclick="showScreen('demo-scenario', this)" data-i18n="tab_demo">🎬 Live Demo</button>
+            <button class="nav-tab" onclick="showScreen('register', this)" data-i18n="tab_register">🚀 Register Company</button>
+        </div>
+        
+        <!-- DELIVERY COMPANY ADMIN -->
+        <div id="delivery-admin" class="screen active">
+            <div class="screen-header">
+                <h2 data-i18n="delivery_title">Delivery Company Dashboard</h2>
+                <p data-i18n="delivery_subtitle">Real-time monitoring and intelligent dispute resolution</p>
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">1,247</div>
+                    <div class="metric-label" data-i18n="metric_orders">Total Orders Today</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">23</div>
+                    <div class="metric-label" data-i18n="metric_disputes">Active Disputes</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">156</div>
+                    <div class="metric-label" data-i18n="metric_risk">High-Risk Buyers</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">89%</div>
+                    <div class="metric-label" data-i18n="metric_auto">Auto-Resolved</div>
+                </div>
+            </div>
+            
+            <div class="alert alert-success">
+                <strong>✓ <span data-i18n="performance">Performance</span></strong><br>
+                <span data-i18n="performance_msg">The platform has automatically resolved 89% of disputes without manual intervention, saving 2.3M DZD in operational costs this month.</span>
+            </div>
+            
+            <div class="card">
+                <h3 data-i18n="recent_disputes">Recent Disputes</h3>
+                <div id="deliveryDisputes" class="dispute-list"></div>
+            </div>
+        </div>
+        
+        <!-- MERCHANT DASHBOARD -->
+        <div id="merchant" class="screen">
+            <div class="screen-header">
+                <h2 data-i18n="merchant_title">Merchant Dashboard</h2>
+                <p data-i18n="merchant_subtitle">Upload protection evidence for your shipments</p>
+            </div>
+            
+            <div class="alert alert-info">
+                <strong>💡 <span data-i18n="best_practice">Best Practice</span></strong><br>
+                <span data-i18n="best_practice_msg">Upload clear packing photos before shipment. Merchants with photo evidence win 94% of contested cases.</span>
+            </div>
+            
+            <div class="card">
+                <h3 data-i18n="upload_evidence">Upload Packing Evidence</h3>
+                <form id="merchantUploadForm">
+                    <div class="form-group">
+                        <label data-i18n="order_id">Order ID</label>
+                        <input type="text" id="merchantOrderId" required data-i18n-placeholder="order_id_placeholder" placeholder="e.g., ORD-1240">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="upload_photos">Upload Packing Photos (Before Sealing)</label>
+                        <input type="file" id="merchantPhotos" multiple accept="image/*" required>
+                        <div id="merchantPreview" class="image-preview-grid" style="margin-top: 15px;"></div>
+                    </div>
+                    <button type="submit" class="btn" data-i18n="submit_evidence">Submit Protection Evidence</button>
+                </form>
+                <div id="merchantSuccess" style="display:none;"></div>
+            </div>
+            
+            <div class="card">
+                <h3 data-i18n="protected_orders">Your Protected Orders</h3>
+                <div id="protectedOrders"></div>
+            </div>
+        </div>
+        
+        <!-- BUYER DISPUTE -->
+        <div id="buyer" class="screen">
+            <div class="screen-header">
+                <h2 data-i18n="buyer_title">Submit Delivery Dispute</h2>
+                <p data-i18n="buyer_subtitle">Secure access via SMS - No account required</p>
+            </div>
+            
+            <div class="alert alert-info">
+                <strong>🔐 <span data-i18n="secure_access">Secure Access</span></strong><br>
+                <span data-i18n="secure_msg">This link was sent to your phone. You can only dispute orders associated with your number.</span>
+            </div>
+            
+            <div class="alert alert-warning">
+                <strong><span data-i18n="order">Order</span> #ORD-1235</strong><br>
+                <span data-i18n="amount">Amount</span>: 3,200 DZD<br>
+                <span data-i18n="merchant">Merchant</span>: Tech Store DZ<br>
+                <span data-i18n="delivery_date">Delivery Date</span>: Jan 19, 2026
+            </div>
+            
+            <div class="card">
+                <h3 data-i18n="submit_dispute">Submit Dispute</h3>
+                <form id="buyerDisputeForm">
+                    <div class="form-group">
+                        <label data-i18n="concern">What is your concern? *</label>
+                        <select id="disputeReason" onchange="handleDisputeReason()" required>
+                            <option value="" data-i18n="select_reason">Select reason...</option>
+                            <option value="not-delivered" data-i18n="not_delivered">❌ Package Not Delivered</option>
+                            <option value="damaged" data-i18n="damaged">📦 Package Damaged</option>
+                            <option value="wrong-status" data-i18n="wrong_status">❓ Wrong Status (Delivered but not received)</option>
+                            <option value="refused" data-i18n="refused">🚫 I Refused Package</option>
+                            <option value="quality" data-i18n="quality">⚠️ Product Quality Issue</option>
+                        </select>
+                    </div>
+                    
+                    <div id="deliveryForm" style="display: none;">
+                        <div class="form-group">
+                            <label data-i18n="phone_number">Phone Number *</label>
+                            <input type="tel" id="buyerPhone" required placeholder="0551-XX-XX-XX" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{2}">
+                            <small style="color: #6b7280; font-size: 0.85em;">Format: 0551-XX-XX-XX</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-i18n="upload_id">Upload ID Card / National ID *</label>
+                            <input type="file" id="buyerId" accept="image/*,application/pdf" required onchange="previewBuyerId()">
+                            <div id="idPreview" style="margin-top: 10px;"></div>
+                            <small style="color: #6b7280; font-size: 0.85em;" data-i18n="id_privacy">Your ID is encrypted and used only for verification</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-i18n="upload_evidence_photos">Upload Evidence Photos *</label>
+                            <input type="file" id="disputePhotos" multiple accept="image/*" required onchange="previewBuyerPhotos()">
+                            <div id="buyerPreview" class="image-preview-grid" style="margin-top: 15px;"></div>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="additional_details">Additional Details (Optional)</label>
+                            <textarea id="disputeDetails" rows="4" maxlength="200" data-i18n-placeholder="details_placeholder" placeholder="Provide any additional context..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label style="display: flex; align-items: start; gap: 10px; cursor: pointer;">
+                                <input type="checkbox" id="termsAccept" required style="width: auto; margin-top: 4px;">
+                                <span style="font-weight: normal;">
+                                    <span data-i18n="agree_to">I agree to the</span>
+                                    <a href="#" onclick="showTerms(event)" style="color: #3b82f6; text-decoration: underline;" data-i18n="terms_conditions">Terms & Conditions</a>
+                                    <span data-i18n="and">and</span>
+                                    <a href="#" onclick="showPrivacy(event)" style="color: #3b82f6; text-decoration: underline;" data-i18n="privacy_policy">Privacy Policy</a>
+                                </span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-i18n="email_optional">Email Address (Optional - for notifications)</label>
+                            <input type="email" id="buyerEmail" placeholder="example@email.com">
+                            <small style="color: #6b7280; font-size: 0.85em;" data-i18n="email_notification_info">We'll send dispute updates via email and SMS</small>
+                        </div>
+                        
+                        <button type="submit" class="btn" data-i18n="submit_btn">Submit Dispute</button>
+                    </div>
+                </form>
+                
+                <div id="qualityWarning" style="display: none;">
+                    <div class="alert alert-danger">
+                        <strong>⚠️ <span data-i18n="quality_warning_title">Product Quality Disputes Not Handled</span></strong><br><br>
+                        <span data-i18n="quality_warning_msg">This platform only arbitrates delivery-related issues. Product quality must be resolved with the merchant.</span><br><br>
+                        <strong><span data-i18n="merchant_contact">Merchant Contact</span>:</strong> Tech Store DZ - 0551-XX-XX-XX
+                    </div>
+                </div>
+                
+                <div id="disputeSuccess" style="display: none;"></div>
+            </div>
+        </div>
+        
+        <!-- TRACKING SCREEN -->
+        <div id="tracking" class="screen">
+            <div class="screen-header">
+                <h2 data-i18n="tracking_title">📍 Universal Package Tracking</h2>
+                <p data-i18n="tracking_subtitle">Track packages from ANY delivery company in Algeria</p>
+            </div>
+            
+            <!-- Search Order -->
+            <div class="card">
+                <h3 data-i18n="track_order">Track Any Package</h3>
+                <p style="color: #6b7280; margin-bottom: 15px;">Supports: Yalidine, ZR Express, Procolis, Yassir, Ecco Track, Algérie Poste & more</p>
+                <div style="display: flex; gap: 15px; align-items: end;">
+                    <div class="form-group" style="flex: 1; margin: 0;">
+                        <label data-i18n="tracking_number">Tracking Number</label>
+                        <input type="text" id="trackingOrderId" placeholder="YD1234567890, ZR12345678, ORD-1235..." value="ORD-1235" style="text-transform: uppercase;">
+                        <small style="color: #6b7280; font-size: 0.85em;">Auto-detects carrier from tracking number format</small>
+                    </div>
+                    <button class="btn" onclick="trackOrder()" data-i18n="track_btn">🔍 Track</button>
+                </div>
+                
+                <!-- Detected Carrier (shown after tracking) -->
+                <div id="detectedCarrier" style="margin-top: 15px; padding: 12px; background: #eff6ff; border-radius: 8px; display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 48px; height: 48px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.5em;">
+                        🚚
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; color: #1e3a8a;">Detected Carrier: <span style="color: #3b82f6;">Internal System (Demo)</span></div>
+                        <div style="font-size: 0.85em; color: #6b7280;">Pattern matched • Real-time data loaded</div>
+                    </div>
+                    <div style="background: #22c55e; color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.85em; font-weight: 600;">
+                        ✓ CONNECTED
+                    </div>
+                </div>
+                
+                <!-- Supported Carriers -->
+                <details style="margin-top: 20px;">
+                    <summary style="cursor: pointer; font-weight: 600; color: #3b82f6; padding: 10px; background: #f9fafb; border-radius: 8px;">
+                        📋 Supported Carriers - Click to view all
+                    </summary>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 15px; padding: 15px; background: #f9fafb; border-radius: 8px;">
+                        <div style="padding: 12px; background: white; border-radius: 6px; text-align: center; border: 2px solid #e5e7eb;">
+                            <div style="font-weight: 700; color: #1e3a8a;">Yalidine</div>
+                            <small style="color: #6b7280;">YD##########</small>
+                        </div>
+                        <div style="padding: 12px; background: white; border-radius: 6px; text-align: center; border: 2px solid #e5e7eb;">
+                            <div style="font-weight: 700; color: #1e3a8a;">ZR Express</div>
+                            <small style="color: #6b7280;">ZR########</small>
+                        </div>
+                        <div style="padding: 12px; background: white; border-radius: 6px; text-align: center; border: 2px solid #e5e7eb;">
+                            <div style="font-weight: 700; color: #1e3a8a;">Procolis</div>
+                            <small style="color: #6b7280;">PR#######</small>
+                        </div>
+                        <div style="padding: 12px; background: white; border-radius: 6px; text-align: center; border: 2px solid #e5e7eb;">
+                            <div style="font-weight: 700; color: #1e3a8a;">Yassir Express</div>
+                            <small style="color: #6b7280;">YS############</small>
+                        </div>
+                        <div style="padding: 12px; background: white; border-radius: 6px; text-align: center; border: 2px solid #e5e7eb;">
+                            <div style="font-weight: 700; color: #1e3a8a;">Ecco Track</div>
+                            <small style="color: #6b7280;">EC#########</small>
+                        </div>
+                        <div style="padding: 12px; background: white; border-radius: 6px; text-align: center; border: 2px solid #e5e7eb;">
+                            <div style="font-weight: 700; color: #1e3a8a;">Algérie Poste</div>
+                            <small style="color: #6b7280;">RA#########DZ</small>
+                        </div>
+                    </div>
+                </details>
+            </div>
+            
+            <!-- Tracking Results -->
+            <div id="trackingResults" style="display: block;">
+                
+                <!-- Current Status Card -->
+                <div class="card" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: white;">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div>
+                            <h3 style="color: white; margin-bottom: 10px;">Order #ORD-1235</h3>
+                            <p style="opacity: 0.9;">Samsung Galaxy S24 (256GB) - 89,000 DZD</p>
+                        </div>
+                        <div style="background: #22c55e; padding: 8px 16px; border-radius: 20px; font-weight: 700;">
+                            📦 IN TRANSIT
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 25px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                        <div>
+                            <div style="opacity: 0.8; font-size: 0.9em;">Estimated Delivery</div>
+                            <div style="font-size: 1.3em; font-weight: 700; margin-top: 5px;">Today, 5:00 PM</div>
+                        </div>
+                        <div>
+                            <div style="opacity: 0.8; font-size: 0.9em;">Courier</div>
+                            <div style="font-size: 1.3em; font-weight: 700; margin-top: 5px;">Karim M.</div>
+                        </div>
+                        <div>
+                            <div style="opacity: 0.8; font-size: 0.9em;">Contact</div>
+                            <div style="font-size: 1.3em; font-weight: 700; margin-top: 5px;">0551-XX-XX-89</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Map and Timeline Grid -->
+                <div class="grid-2">
+                    <!-- GPS Map -->
+                    <div class="card">
+                        <h3>📍 Live GPS Tracking</h3>
+                        <div id="trackingMap" style="width: 100%; height: 400px; background: #f3f4f6; border-radius: 8px; margin-top: 15px; position: relative; overflow: hidden;">
+                            <!-- Simulated Map -->
+                            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);">
+                                
+                                <!-- Map Grid Lines -->
+                                <svg width="100%" height="100%" style="position: absolute;">
+                                    <defs>
+                                        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>
+                                        </pattern>
+                                    </defs>
+                                    <rect width="100%" height="100%" fill="url(#grid)" />
+                                </svg>
+                                
+                                <!-- Route Line -->
+                                <svg width="100%" height="100%" style="position: absolute;">
+                                    <path d="M 50 350 Q 150 300, 200 250 T 350 150 T 450 100" 
+                                          stroke="#3b82f6" 
+                                          stroke-width="4" 
+                                          fill="none" 
+                                          stroke-dasharray="8,4"
+                                          opacity="0.6"/>
+                                </svg>
+                                
+                                <!-- Warehouse (Start) -->
+                                <div style="position: absolute; left: 30px; bottom: 30px; background: white; padding: 12px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 12px; height: 12px; background: #6b7280; border-radius: 50%;"></div>
+                                    <span style="font-size: 0.85em; font-weight: 600;">🏢 Warehouse</span>
+                                </div>
+                                
+                                <!-- Current Location (Courier) -->
+                                <div id="courierMarker" style="position: absolute; left: 330px; top: 130px; animation: pulse 2s infinite;">
+                                    <div style="width: 40px; height: 40px; background: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); border: 3px solid white;">
+                                        <span style="font-size: 1.2em;">🚚</span>
+                                    </div>
+                                    <div style="background: white; padding: 8px 12px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); margin-top: 8px; white-space: nowrap; font-size: 0.85em; font-weight: 600;">
+                                        📍 Karim M. - 2.5 km away
+                                    </div>
+                                </div>
+                                
+                                <!-- Destination -->
+                                <div style="position: absolute; right: 30px; top: 30px; background: white; padding: 12px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 12px; height: 12px; background: #ef4444; border-radius: 50%;"></div>
+                                    <span style="font-size: 0.85em; font-weight: 600;">🏠 Your Address</span>
+                                </div>
+                                
+                                <!-- Map Controls -->
+                                <div style="position: absolute; top: 15px; left: 15px; display: flex; flex-direction: column; gap: 8px;">
+                                    <button style="width: 36px; height: 36px; background: white; border: none; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); cursor: pointer; font-size: 1.2em;">+</button>
+                                    <button style="width: 36px; height: 36px; background: white; border: none; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); cursor: pointer; font-size: 1.2em;">−</button>
+                                </div>
+                                
+                                <!-- Last Updated -->
+                                <div style="position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.7); color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.8em;">
+                                    Updated: <span id="lastUpdate">2 min ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- GPS Info -->
+                        <div style="margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div style="background: #f9fafb; padding: 12px; border-radius: 8px;">
+                                <div style="color: #6b7280; font-size: 0.85em;">Current Location</div>
+                                <div style="font-weight: 600; margin-top: 5px;">Rue Larbi Ben M'hidi, Sétif</div>
+                            </div>
+                            <div style="background: #f9fafb; padding: 12px; border-radius: 8px;">
+                                <div style="color: #6b7280; font-size: 0.85em;">Distance to You</div>
+                                <div style="font-weight: 600; margin-top: 5px;">2.5 km (8 minutes)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Delivery Timeline -->
+                    <div class="card">
+                        <h3>📋 Delivery Timeline</h3>
+                        <div class="timeline" style="margin-top: 20px;">
+                            <div class="timeline-item">
+                                <div class="timeline-content" style="background: #d1fae5;">
+                                    <div class="timeline-time">Jan 15, 2026 - 2:00 PM</div>
+                                    <div><strong>✅ Package Picked Up</strong></div>
+                                    <div style="color: #6b7280; font-size: 0.9em; margin-top: 5px;">
+                                        From: Tech Store DZ Warehouse<br>
+                                        GPS: 36.1911, 5.4153
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-content" style="background: #d1fae5;">
+                                    <div class="timeline-time">Jan 15, 2026 - 3:30 PM</div>
+                                    <div><strong>✅ Arrived at Hub</strong></div>
+                                    <div style="color: #6b7280; font-size: 0.9em; margin-top: 5px;">
+                                        Location: Sétif Distribution Center<br>
+                                        Processing time: 15 minutes
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-content" style="background: #d1fae5;">
+                                    <div class="timeline-time">Jan 16, 2026 - 9:00 AM</div>
+                                    <div><strong>✅ Out for Delivery</strong></div>
+                                    <div style="color: #6b7280; font-size: 0.9em; margin-top: 5px;">
+                                        Courier: Karim M.<br>
+                                        Vehicle: Moto - DZA 1234
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-content" style="background: #bfdbfe; border: 2px solid #3b82f6;">
+                                    <div class="timeline-time">Jan 16, 2026 - 3:45 PM (Now)</div>
+                                    <div><strong>🚚 In Transit</strong></div>
+                                    <div style="color: #6b7280; font-size: 0.9em; margin-top: 5px;">
+                                        Current: Rue Larbi Ben M'hidi<br>
+                                        Distance: 2.5 km (8 min away)<br>
+                                        Speed: 20 km/h
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-content" style="background: #f3f4f6; opacity: 0.6;">
+                                    <div class="timeline-time">Expected: Today - 5:00 PM</div>
+                                    <div><strong>📦 Delivery</strong></div>
+                                    <div style="color: #6b7280; font-size: 0.9em; margin-top: 5px;">
+                                        To: Building 15, Apt 204<br>
+                                        Signature required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Proof of Delivery (if delivered) -->
+                        <div id="proofOfDelivery" style="display: none; margin-top: 25px; padding: 20px; background: #f0fdf4; border: 2px solid #22c55e; border-radius: 10px;">
+                            <h4 style="color: #065f46; margin-bottom: 15px;">✅ Proof of Delivery</h4>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23e5e7eb' width='100' height='100'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%236b7280' font-size='30'%3E📸%3C/text%3E%3C/svg%3E" 
+                                     style="width: 100%; border-radius: 6px; border: 2px solid #d1fae5;">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23e5e7eb' width='100' height='100'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%236b7280' font-size='30'%3E📸%3C/text%3E%3C/svg%3E" 
+                                     style="width: 100%; border-radius: 6px; border: 2px solid #d1fae5;">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23e5e7eb' width='100' height='100'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%236b7280' font-size='30'%3E✍️%3C/text%3E%3C/svg%3E" 
+                                     style="width: 100%; border-radius: 6px; border: 2px solid #d1fae5;">
+                            </div>
+                            <div style="color: #065f46;">
+                                <strong>Delivered to:</strong> Ahmed Benali<br>
+                                <strong>Signature:</strong> Received<br>
+                                <strong>Time:</strong> Jan 16, 2026 - 5:12 PM<br>
+                                <strong>GPS:</strong> 36.1897, 5.4201 (Verified ✓)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Info -->
+                <div class="card">
+                    <h3>📞 Need Help?</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;">
+                        <button class="btn btn-secondary" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <span>📞</span>
+                            <span>Call Courier</span>
+                        </button>
+                        <button class="btn btn-secondary" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <span>💬</span>
+                            <span>WhatsApp</span>
+                        </button>
+                        <button class="btn btn-secondary" style="display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="showScreen('buyer', document.querySelector('.nav-tab'))">
+                            <span>⚠️</span>
+                            <span>Report Issue</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- PLATFORM ADMIN -->
+        <div id="platform-admin" class="screen">
+            <div class="screen-header">
+                <h2 data-i18n="admin_title">Platform Administration</h2>
+                <p data-i18n="admin_subtitle">Review inconclusive cases requiring manual decision</p>
+            </div>
+            
+            <div class="alert alert-info">
+                <strong>📈 <span data-i18n="performance">Performance</span></strong><br>
+                <span data-i18n="performance_msg">89% of disputes are automatically resolved. Only 11% require manual review.</span>
+            </div>
+            
+            <div id="adminCasesList"></div>
+        </div>
+        
+        <!-- ANALYTICS -->
+        <div id="analytics" class="screen">
+            <div class="screen-header">
+                <h2 data-i18n="analytics_title">Platform Analytics</h2>
+                <p data-i18n="analytics_subtitle">Performance metrics and insights</p>
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">342</div>
+                    <div class="metric-label" data-i18n="total_disputes_30">Total Disputes (30 days)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">89%</div>
+                    <div class="metric-label" data-i18n="auto_resolution">Auto-Resolution Rate</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">4.2h</div>
+                    <div class="metric-label" data-i18n="avg_resolution">Avg Resolution Time</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">2.3M</div>
+                    <div class="metric-label" data-i18n="cost_saved">Cost Saved (DZD)</div>
+                </div>
+            </div>
+            
+            <div class="grid-2">
+                <div class="card">
+                    <h3 data-i18n="dispute_types">Dispute Types</h3>
+                    <div style="margin-top: 20px;">
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span data-i18n="not_delivered">Not Delivered</span>
+                                <strong>45%</strong>
+                            </div>
+                            <div style="height: 8px; background: #e5e7eb; border-radius: 4px;">
+                                <div style="width: 45%; height: 100%; background: #3b82f6; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span data-i18n="damaged">Damaged Package</span>
+                                <strong>28%</strong>
+                            </div>
+                            <div style="height: 8px; background: #e5e7eb; border-radius: 4px;">
+                                <div style="width: 28%; height: 100%; background: #ef4444; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span data-i18n="wrong_status">Wrong Status</span>
+                                <strong>18%</strong>
+                            </div>
+                            <div style="height: 8px; background: #e5e7eb; border-radius: 4px;">
+                                <div style="width: 18%; height: 100%; background: #f59e0b; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Other</span>
+                                <strong>9%</strong>
+                            </div>
+                            <div style="height: 8px; background: #e5e7eb; border-radius: 4px;">
+                                <div style="width: 9%; height: 100%; background: #6b7280; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 data-i18n="resolution_outcomes">Resolution Outcomes</h3>
+                    <div style="margin-top: 20px;">
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span data-i18n="favor_buyer_stat">Favor Buyer</span>
+                                <strong>52%</strong>
+                            </div>
+                            <div style="height: 8px; background: #e5e7eb; border-radius: 4px;">
+                                <div style="width: 52%; height: 100%; background: #22c55e; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span data-i18n="favor_merchant_stat">Favor Merchant</span>
+                                <strong>37%</strong>
+                            </div>
+                            <div style="height: 8px; background: #e5e7eb; border-radius: 4px;">
+                                <div style="width: 37%; height: 100%; background: #3b82f6; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span data-i18n="manual_review_stat">Manual Review</span>
+                                <strong>11%</strong>
+                            </div>
+                            <div style="height: 8px; background: #e5e7eb; border-radius: 4px;">
+                                <div style="width: 11%; height: 100%; background: #f59e0b; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- DEMO SCENARIO -->
+        <div id="demo-scenario" class="screen">
+            <div class="screen-header">
+                <h2 data-i18n="demo_title">🎬 Interactive Demo Scenario</h2>
+                <p data-i18n="demo_subtitle">Watch a realistic dispute case from start to finish</p>
+            </div>
+            
+            <div class="alert alert-info">
+                <strong>📖 Scenario:</strong> Ahmed orders a smartphone from Tech Store DZ. The courier marks it as "delivered" but Ahmed never received it. Let's see how the platform handles this dispute automatically.
+            </div>
+            
+            <!-- Progress Tracker -->
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                    <h3>Case Progress</h3>
+                    <div id="demo-progress" style="font-weight: 600; color: #3b82f6;">Step <span id="current-step">1</span> of 8</div>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 30px;">
+                    <div id="step-indicator-1" class="step-indicator active">1</div>
+                    <div id="step-indicator-2" class="step-indicator">2</div>
+                    <div id="step-indicator-3" class="step-indicator">3</div>
+                    <div id="step-indicator-4" class="step-indicator">4</div>
+                    <div id="step-indicator-5" class="step-indicator">5</div>
+                    <div id="step-indicator-6" class="step-indicator">6</div>
+                    <div id="step-indicator-7" class="step-indicator">7</div>
+                    <div id="step-indicator-8" class="step-indicator">8</div>
+                </div>
+                
+                <div id="demo-content"></div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                    <button id="demo-prev" class="btn btn-secondary" onclick="demoPrevStep()" style="display: none;">← Previous</button>
+                    <button id="demo-next" class="btn btn-primary" onclick="demoNextStep()">Next Step →</button>
+                    <button id="demo-restart" class="btn btn-secondary" onclick="demoRestart()" style="display: none;">🔄 Restart Demo</button>
+                </div>
+            </div>
+            
+            <!-- Case Details Card -->
+            <div class="card" style="background: #f9fafb;">
+                <h3>📋 Case Details</h3>
+                <div class="grid-2" style="gap: 20px; margin-top: 20px;">
+                    <div>
+                        <strong>Order Information:</strong><br>
+                        Order ID: ORD-2024-5847<br>
+                        Product: Samsung Galaxy S24 (256GB)<br>
+                        Amount: 89,000 DZD<br>
+                        Merchant: Tech Store DZ
+                    </div>
+                    <div>
+                        <strong>Parties Involved:</strong><br>
+                        Buyer: Ahmed Benali (0551-23-45-67)<br>
+                        Merchant: Tech Store DZ<br>
+                        Courier: YalidineExpress<br>
+                        Delivery Agent: Karim M.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- DELIVERY COMPANY REGISTRATION -->
+        <div id="register" class="screen">
+            <div class="screen-header">
+                <h2 data-i18n="register_title">Register Your Delivery Company</h2>
+                <p data-i18n="register_subtitle">Join our platform and start resolving disputes automatically</p>
+            </div>
+            
+            <div class="alert alert-info">
+                <strong>🚀 <span data-i18n="pilot_program">Pilot Program</span></strong><br>
+                <span data-i18n="pilot_msg">We're currently onboarding delivery companies in Algeria. Register now to be part of our pilot program.</span>
+            </div>
+            
+            <div class="grid-2">
+                <div class="card">
+                    <h3 data-i18n="benefits_title">Platform Benefits</h3>
+                    <ul style="margin: 20px 0; padding-left: 20px; line-height: 2;">
+                        <li data-i18n="benefit_1">89% automatic dispute resolution</li>
+                        <li data-i18n="benefit_2">Save 2.3M DZD monthly in operational costs</li>
+                        <li data-i18n="benefit_3">Reduce customer service workload by 75%</li>
+                        <li data-i18n="benefit_4">AI-powered fraud detection</li>
+                        <li data-i18n="benefit_5">Real-time analytics dashboard</li>
+                        <li data-i18n="benefit_6">Multi-language support (AR, FR, EN)</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3 data-i18n="how_it_works">How It Works</h3>
+                    <div style="margin-top: 20px;">
+                        <div style="margin-bottom: 20px; padding: 15px; background: #f9fafb; border-radius: 8px;">
+                            <strong>1. <span data-i18n="step_register">Register</span></strong><br>
+                            <span style="color: #6b7280;" data-i18n="step_register_desc">Complete the form below</span>
+                        </div>
+                        <div style="margin-bottom: 20px; padding: 15px; background: #f9fafb; border-radius: 8px;">
+                            <strong>2. <span data-i18n="step_integration">Integration</span></strong><br>
+                            <span style="color: #6b7280;" data-i18n="step_integration_desc">We'll provide API access and onboarding support</span>
+                        </div>
+                        <div style="margin-bottom: 20px; padding: 15px; background: #f9fafb; border-radius: 8px;">
+                            <strong>3. <span data-i18n="step_launch">Launch</span></strong><br>
+                            <span style="color: #6b7280;" data-i18n="step_launch_desc">Start resolving disputes in 24-48 hours</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 data-i18n="registration_form">Registration Form</h3>
+                <form id="companyRegisterForm">
+                    <div class="grid-2" style="gap: 20px;">
+                        <div class="form-group">
+                            <label data-i18n="company_name">Company Name *</label>
+                            <input type="text" id="companyName" required placeholder="e.g., YalidineExpress">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="company_registration">Commercial Registration Number *</label>
+                            <input type="text" id="companyReg" required placeholder="e.g., 123456789">
+                        </div>
+                    </div>
+                    
+                    <div class="grid-2" style="gap: 20px;">
+                        <div class="form-group">
+                            <label data-i18n="contact_person">Contact Person *</label>
+                            <input type="text" id="contactPerson" required placeholder="Full Name">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="contact_position">Position *</label>
+                            <input type="text" id="contactPosition" required placeholder="e.g., Operations Manager">
+                        </div>
+                    </div>
+                    
+                    <div class="grid-2" style="gap: 20px;">
+                        <div class="form-group">
+                            <label data-i18n="contact_email">Email Address *</label>
+                            <input type="email" id="contactEmail" required placeholder="contact@company.dz">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="contact_phone">Phone Number *</label>
+                            <input type="tel" id="contactPhone" required placeholder="0551-XX-XX-XX">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-i18n="monthly_volume">Monthly Delivery Volume *</label>
+                        <select id="monthlyVolume" required>
+                            <option value="">Select range...</option>
+                            <option value="0-1000">0 - 1,000 deliveries/month</option>
+                            <option value="1000-5000">1,000 - 5,000 deliveries/month</option>
+                            <option value="5000-20000">5,000 - 20,000 deliveries/month</option>
+                            <option value="20000+">20,000+ deliveries/month</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-i18n="current_dispute_rate">Current Monthly Dispute Rate (Optional)</label>
+                        <input type="text" id="disputeRate" placeholder="e.g., 5% or 150 disputes/month">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-i18n="additional_info">Additional Information (Optional)</label>
+                        <textarea id="additionalInfo" rows="4" placeholder="Tell us about your current dispute handling process..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="display: flex; align-items: start; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="companyTerms" required style="width: auto; margin-top: 4px;">
+                            <span style="font-weight: normal;" data-i18n="company_terms">I confirm that the information provided is accurate and agree to the platform terms</span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn" style="width: 100%;" data-i18n="submit_registration">Submit Registration</button>
+                </form>
+                
+                <div id="registerSuccess" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Translation system
+        const translations = {
+            en: {
+                app_title: "Delivery Dispute Resolution Platform",
+                app_subtitle: "AI-Powered Arbitration & Risk Management",
+                demo_badge: "ENHANCED DEMO",
+                
+                // Tabs
+                tab_delivery: "🚚 Delivery Company",
+                tab_merchant: "🏪 Merchant",
+                tab_buyer: "👤 Buyer Dispute",
+                tab_admin: "⚙️ Platform Admin",
+                tab_analytics: "📊 Analytics",
+                
+                // Delivery Company
+                delivery_title: "Delivery Company Dashboard",
+                delivery_subtitle: "Real-time monitoring and intelligent dispute resolution",
+                metric_orders: "Total Orders Today",
+                metric_disputes: "Active Disputes",
+                metric_risk: "High-Risk Buyers",
+                metric_auto: "Auto-Resolved",
+                performance_msg: "The platform has automatically resolved 89% of disputes without manual intervention, saving 2.3M DZD in operational costs this month.",
+                recent_disputes: "Recent Disputes",
+                
+                // Merchant
+                merchant_title: "Merchant Dashboard",
+                merchant_subtitle: "Upload protection evidence for your shipments",
+                best_practice: "Best Practice",
+                best_practice_msg: "Upload clear packing photos before shipment. Merchants with photo evidence win 94% of contested cases.",
+                upload_evidence: "Upload Packing Evidence",
+                order_id: "Order ID",
+                order_id_placeholder: "e.g., ORD-1240",
+                upload_photos: "Upload Packing Photos (Before Sealing)",
+                submit_evidence: "Submit Protection Evidence",
+                protected_orders: "Your Protected Orders",
+                no_orders: "No protected orders yet",
+                photos_uploaded: "photos uploaded",
+                protected: "Protected",
+                
+                // Buyer
+                buyer_title: "Submit Delivery Dispute",
+                buyer_subtitle: "Secure access via SMS - No account required",
+                secure_access: "Secure Access",
+                secure_msg: "This link was sent to your phone. You can only dispute orders associated with your number.",
+                order: "Order",
+                amount: "Amount",
+                merchant: "Merchant",
+                delivery_date: "Delivery Date",
+                submit_dispute: "Submit Dispute",
+                concern: "What is your concern?",
+                select_reason: "Select reason...",
+                phone_number: "Phone Number",
+                upload_id: "Upload ID Card / National ID",
+                id_privacy: "Your ID is encrypted and used only for verification",
+                not_delivered: "❌ Package Not Delivered",
+                damaged: "📦 Package Damaged",
+                wrong_status: "❓ Wrong Status (Delivered but not received)",
+                refused: "🚫 I Refused Package",
+                quality: "⚠️ Product Quality Issue",
+                upload_evidence_photos: "Upload Evidence Photos",
+                additional_details: "Additional Details (Optional)",
+                details_placeholder: "Provide any additional context...",
+                submit_btn: "Submit Dispute",
+                quality_warning_title: "Product Quality Disputes Not Handled",
+                quality_warning_msg: "This platform only arbitrates delivery-related issues. Product quality must be resolved with the merchant.",
+                merchant_contact: "Merchant Contact",
+                
+                // Admin
+                admin_title: "Platform Administration",
+                admin_subtitle: "Review inconclusive cases requiring manual decision",
+                performance: "Performance",
+                performance_msg: "89% of disputes are automatically resolved. Only 11% require manual review.",
+                all_clear: "All Clear!",
+                all_clear_msg: "No inconclusive disputes requiring manual review at this time. The system is working perfectly!",
+                manual_review_required: "Manual Review Required",
+                ai_confidence: "AI confidence score",
+                below_threshold: "Below threshold for automatic resolution",
+                buyer_evidence: "Buyer Evidence",
+                merchant_evidence: "Merchant Evidence",
+                no_merchant_photos: "No merchant photos available",
+                favor_buyer: "Favor Buyer",
+                favor_merchant: "Favor Merchant",
+                request_more_info: "Request More Info",
+                
+                // Analytics
+                analytics_title: "Platform Analytics",
+                analytics_subtitle: "Performance metrics and insights",
+                total_disputes_30: "Total Disputes (30 days)",
+                auto_resolution: "Auto-Resolution Rate",
+                avg_resolution: "Avg Resolution Time",
+                cost_saved: "Cost Saved (DZD)",
+                dispute_types: "Dispute Types",
+                resolution_outcomes: "Resolution Outcomes",
+                favor_buyer_stat: "Favor Buyer",
+                favor_merchant_stat: "Favor Merchant",
+                manual_review_stat: "Manual Review",
+                
+                // Status
+                status_pending: "Pending",
+                status_analyzing: "AI Analyzing",
+                status_resolved: "Resolved",
+                status_manual: "Manual Review",
+                
+                // Success messages
+                success_submitted: "Dispute Submitted Successfully",
+                success_analyzing: "Your dispute has been received and is being analyzed by our AI system.",
+                reference: "Reference",
+                next_steps: "Next Steps",
+                step_ai: "AI analysis in progress (2-5 minutes)",
+                step_comparison: "Evidence comparison with merchant photos",
+                step_decision: "Automatic decision or escalation to manual review",
+                sms_notification: "You will receive an SMS notification within 24 hours with the result.",
+                
+                evidence_uploaded: "Protection Evidence Uploaded",
+                evidence_msg: "Your packing photos for order",
+                evidence_recorded: "photo(s) recorded and verified.",
+                now_protected: "You are now protected against delivery disputes for this order",
+                auto_arbitration: "Evidence will be used for automatic arbitration if needed",
+                
+                // Common
+                photos: "photos",
+                risk_level: "Risk Level",
+                low: "Low",
+                medium: "Medium",
+                high: "High",
+                type: "Type",
+                status: "Status",
+                timeline: "Timeline",
+                processing: "Processing...",
+                uploading: "Uploading...",
+                details: "Details",
+                
+                // Legal
+                agree_to: "I agree to the",
+                and: "and",
+                terms_conditions: "Terms & Conditions",
+                privacy_policy: "Privacy Policy",
+                email_optional: "Email Address (Optional - for notifications)",
+                email_notification_info: "We'll send dispute updates via email and SMS",
+                
+                // Registration
+                tab_register: "🚀 Register Company",
+                register_title: "Register Your Delivery Company",
+                register_subtitle: "Join our platform and start resolving disputes automatically",
+                pilot_program: "Pilot Program",
+                pilot_msg: "We're currently onboarding delivery companies in Algeria. Register now to be part of our pilot program.",
+                benefits_title: "Platform Benefits",
+                benefit_1: "89% automatic dispute resolution",
+                benefit_2: "Save 2.3M DZD monthly in operational costs",
+                benefit_3: "Reduce customer service workload by 75%",
+                benefit_4: "AI-powered fraud detection",
+                benefit_5: "Real-time analytics dashboard",
+                benefit_6: "Multi-language support (AR, FR, EN)",
+                how_it_works: "How It Works",
+                step_register: "Register",
+                step_register_desc: "Complete the form below",
+                step_integration: "Integration",
+                step_integration_desc: "We'll provide API access and onboarding support",
+                step_launch: "Launch",
+                step_launch_desc: "Start resolving disputes in 24-48 hours",
+                registration_form: "Registration Form",
+                company_name: "Company Name",
+                company_registration: "Commercial Registration Number",
+                contact_person: "Contact Person",
+                contact_position: "Position",
+                contact_email: "Email Address",
+                contact_phone: "Phone Number",
+                monthly_volume: "Monthly Delivery Volume",
+                current_dispute_rate: "Current Monthly Dispute Rate (Optional)",
+                additional_info: "Additional Information (Optional)",
+                company_terms: "I confirm that the information provided is accurate and agree to the platform terms",
+                submit_registration: "Submit Registration"
+            },
+            
+            fr: {
+                app_title: "Plateforme de Résolution des Litiges de Livraison",
+                app_subtitle: "Arbitrage et Gestion des Risques Alimentés par l'IA",
+                demo_badge: "DÉMO AMÉLIORÉE",
+                
+                // Tabs
+                tab_delivery: "🚚 Société de Livraison",
+                tab_merchant: "🏪 Commerçant",
+                tab_buyer: "👤 Litige Acheteur",
+                tab_admin: "⚙️ Admin Plateforme",
+                tab_analytics: "📊 Analytiques",
+                
+                // Delivery Company
+                delivery_title: "Tableau de Bord de Livraison",
+                delivery_subtitle: "Surveillance en temps réel et résolution intelligente des litiges",
+                metric_orders: "Commandes Totales Aujourd'hui",
+                metric_disputes: "Litiges Actifs",
+                metric_risk: "Acheteurs à Haut Risque",
+                metric_auto: "Résolus Automatiquement",
+                performance_msg: "La plateforme a automatiquement résolu 89% des litiges sans intervention manuelle, économisant 2,3M DZD en coûts opérationnels ce mois-ci.",
+                recent_disputes: "Litiges Récents",
+                
+                // Merchant
+                merchant_title: "Tableau de Bord Commerçant",
+                merchant_subtitle: "Téléchargez des preuves de protection pour vos expéditions",
+                best_practice: "Meilleure Pratique",
+                best_practice_msg: "Téléchargez des photos d'emballage claires avant l'expédition. Les commerçants avec des preuves photo gagnent 94% des cas contestés.",
+                upload_evidence: "Télécharger des Preuves d'Emballage",
+                order_id: "ID de Commande",
+                order_id_placeholder: "par ex., ORD-1240",
+                upload_photos: "Télécharger Photos d'Emballage (Avant Scellage)",
+                submit_evidence: "Soumettre les Preuves de Protection",
+                protected_orders: "Vos Commandes Protégées",
+                no_orders: "Aucune commande protégée pour le moment",
+                photos_uploaded: "photos téléchargées",
+                protected: "Protégé",
+                
+                // Buyer
+                buyer_title: "Soumettre un Litige de Livraison",
+                buyer_subtitle: "Accès sécurisé via SMS - Aucun compte requis",
+                secure_access: "Accès Sécurisé",
+                secure_msg: "Ce lien a été envoyé à votre téléphone. Vous ne pouvez contester que les commandes associées à votre numéro.",
+                order: "Commande",
+                amount: "Montant",
+                merchant: "Commerçant",
+                delivery_date: "Date de Livraison",
+                submit_dispute: "Soumettre un Litige",
+                concern: "Quelle est votre préoccupation?",
+                select_reason: "Sélectionnez une raison...",
+                phone_number: "Numéro de Téléphone",
+                upload_id: "Télécharger Carte d'Identité / ID National",
+                id_privacy: "Votre ID est crypté et utilisé uniquement pour vérification",
+                not_delivered: "❌ Colis Non Livré",
+                damaged: "📦 Colis Endommagé",
+                wrong_status: "❓ Mauvais Statut (Livré mais non reçu)",
+                refused: "🚫 J'ai Refusé le Colis",
+                quality: "⚠️ Problème de Qualité du Produit",
+                upload_evidence_photos: "Télécharger Photos de Preuve",
+                additional_details: "Détails Supplémentaires (Optionnel)",
+                details_placeholder: "Fournissez tout contexte supplémentaire...",
+                submit_btn: "Soumettre le Litige",
+                quality_warning_title: "Litiges de Qualité de Produit Non Traités",
+                quality_warning_msg: "Cette plateforme arbitre uniquement les problèmes liés à la livraison. La qualité du produit doit être résolue avec le commerçant.",
+                merchant_contact: "Contact Commerçant",
+                
+                // Admin
+                admin_title: "Administration de la Plateforme",
+                admin_subtitle: "Examiner les cas non concluants nécessitant une décision manuelle",
+                performance: "Performance",
+                performance_msg: "89% des litiges sont automatiquement résolus. Seulement 11% nécessitent un examen manuel.",
+                all_clear: "Tout est Clair!",
+                all_clear_msg: "Aucun litige non concluant nécessitant un examen manuel pour le moment. Le système fonctionne parfaitement!",
+                manual_review_required: "Examen Manuel Requis",
+                ai_confidence: "Score de confiance IA",
+                below_threshold: "En dessous du seuil pour résolution automatique",
+                buyer_evidence: "Preuves Acheteur",
+                merchant_evidence: "Preuves Commerçant",
+                no_merchant_photos: "Aucune photo commerçant disponible",
+                favor_buyer: "Favoriser l'Acheteur",
+                favor_merchant: "Favoriser le Commerçant",
+                request_more_info: "Demander Plus d'Infos",
+                
+                // Analytics
+                analytics_title: "Analytiques de la Plateforme",
+                analytics_subtitle: "Métriques de performance et informations",
+                total_disputes_30: "Litiges Totaux (30 jours)",
+                auto_resolution: "Taux de Résolution Auto",
+                avg_resolution: "Temps Moyen de Résolution",
+                cost_saved: "Coût Économisé (DZD)",
+                dispute_types: "Types de Litiges",
+                resolution_outcomes: "Résultats de Résolution",
+                favor_buyer_stat: "Favoriser l'Acheteur",
+                favor_merchant_stat: "Favoriser le Commerçant",
+                manual_review_stat: "Examen Manuel",
+                
+                // Status
+                status_pending: "En Attente",
+                status_analyzing: "Analyse IA",
+                status_resolved: "Résolu",
+                status_manual: "Examen Manuel",
+                
+                // Success messages
+                success_submitted: "Litige Soumis avec Succès",
+                success_analyzing: "Votre litige a été reçu et est en cours d'analyse par notre système IA.",
+                reference: "Référence",
+                next_steps: "Prochaines Étapes",
+                step_ai: "Analyse IA en cours (2-5 minutes)",
+                step_comparison: "Comparaison des preuves avec photos commerçant",
+                step_decision: "Décision automatique ou escalade vers examen manuel",
+                sms_notification: "Vous recevrez une notification SMS dans les 24 heures avec le résultat.",
+                
+                evidence_uploaded: "Preuves de Protection Téléchargées",
+                evidence_msg: "Vos photos d'emballage pour la commande",
+                evidence_recorded: "photo(s) enregistrées et vérifiées.",
+                now_protected: "Vous êtes maintenant protégé contre les litiges de livraison pour cette commande",
+                auto_arbitration: "Les preuves seront utilisées pour l'arbitrage automatique si nécessaire",
+                
+                // Common
+                photos: "photos",
+                risk_level: "Niveau de Risque",
+                low: "Faible",
+                medium: "Moyen",
+                high: "Élevé",
+                type: "Type",
+                status: "Statut",
+                timeline: "Chronologie",
+                processing: "Traitement...",
+                uploading: "Téléchargement...",
+                details: "Détails"
+            },
+            
+            ar: {
+                app_title: "منصة حل نزاعات التوصيل",
+                app_subtitle: "التحكيم وإدارة المخاطر بالذكاء الاصطناعي",
+                demo_badge: "نسخة تجريبية محسّنة",
+                
+                // Tabs
+                tab_delivery: "🚚 شركة التوصيل",
+                tab_merchant: "🏪 التاجر",
+                tab_buyer: "👤 نزاع المشتري",
+                tab_admin: "⚙️ إدارة المنصة",
+                tab_analytics: "📊 التحليلات",
+                
+                // Delivery Company
+                delivery_title: "لوحة تحكم شركة التوصيل",
+                delivery_subtitle: "المراقبة في الوقت الفعلي والحل الذكي للنزاعات",
+                metric_orders: "إجمالي الطلبات اليوم",
+                metric_disputes: "النزاعات النشطة",
+                metric_risk: "المشترون عاليو المخاطر",
+                metric_auto: "تم الحل تلقائياً",
+                performance_msg: "قامت المنصة بحل 89٪ من النزاعات تلقائيًا دون تدخل يدوي، مما وفر 2.3 مليون دينار جزائري في التكاليف التشغيلية هذا الشهر.",
+                recent_disputes: "النزاعات الأخيرة",
+                
+                // Merchant
+                merchant_title: "لوحة تحكم التاجر",
+                merchant_subtitle: "قم بتحميل أدلة الحماية لشحناتك",
+                best_practice: "أفضل ممارسة",
+                best_practice_msg: "قم بتحميل صور تعبئة واضحة قبل الشحن. التجار الذين لديهم أدلة صور يفوزون في 94٪ من الحالات المتنازع عليها.",
+                upload_evidence: "تحميل أدلة التعبئة",
+                order_id: "رقم الطلب",
+                order_id_placeholder: "مثال، ORD-1240",
+                upload_photos: "تحميل صور التعبئة (قبل الإغلاق)",
+                submit_evidence: "إرسال أدلة الحماية",
+                protected_orders: "طلباتك المحمية",
+                no_orders: "لا توجد طلبات محمية حتى الآن",
+                photos_uploaded: "صور تم تحميلها",
+                protected: "محمي",
+                
+                // Buyer
+                buyer_title: "تقديم نزاع التوصيل",
+                buyer_subtitle: "وصول آمن عبر الرسائل القصيرة - لا حاجة لحساب",
+                secure_access: "وصول آمن",
+                secure_msg: "تم إرسال هذا الرابط إلى هاتفك. يمكنك فقط الاعتراض على الطلبات المرتبطة برقمك.",
+                order: "الطلب",
+                amount: "المبلغ",
+                merchant: "التاجر",
+                delivery_date: "تاريخ التسليم",
+                submit_dispute: "تقديم نزاع",
+                concern: "ما هو قلقك؟",
+                select_reason: "اختر السبب...",
+                phone_number: "رقم الهاتف",
+                upload_id: "تحميل بطاقة الهوية / الهوية الوطنية",
+                id_privacy: "معرّفك مشفر ويستخدم فقط للتحقق",
+                not_delivered: "❌ الطرد لم يتم تسليمه",
+                damaged: "📦 الطرد تالف",
+                wrong_status: "❓ حالة خاطئة (تم التسليم لكن لم يتم الاستلام)",
+                refused: "🚫 رفضت الطرد",
+                quality: "⚠️ مشكلة جودة المنتج",
+                upload_evidence_photos: "تحميل صور الأدلة",
+                additional_details: "تفاصيل إضافية (اختياري)",
+                details_placeholder: "قدم أي سياق إضافي...",
+                submit_btn: "تقديم النزاع",
+                quality_warning_title: "نزاعات جودة المنتج غير معالجة",
+                quality_warning_msg: "هذه المنصة تحكم فقط في القضايا المتعلقة بالتوصيل. يجب حل جودة المنتج مع التاجر.",
+                merchant_contact: "اتصال التاجر",
+                
+                // Admin
+                admin_title: "إدارة المنصة",
+                admin_subtitle: "مراجعة الحالات غير الحاسمة التي تتطلب قرارًا يدويًا",
+                performance: "الأداء",
+                performance_msg: "يتم حل 89٪ من النزاعات تلقائيًا. فقط 11٪ تتطلب مراجعة يدوية.",
+                all_clear: "كل شيء واضح!",
+                all_clear_msg: "لا توجد نزاعات غير حاسمة تتطلب مراجعة يدوية في هذا الوقت. النظام يعمل بشكل مثالي!",
+                manual_review_required: "مطلوب مراجعة يدوية",
+                ai_confidence: "درجة ثقة الذكاء الاصطناعي",
+                below_threshold: "أقل من العتبة للحل التلقائي",
+                buyer_evidence: "أدلة المشتري",
+                merchant_evidence: "أدلة التاجر",
+                no_merchant_photos: "لا توجد صور للتاجر متاحة",
+                favor_buyer: "لصالح المشتري",
+                favor_merchant: "لصالح التاجر",
+                request_more_info: "طلب مزيد من المعلومات",
+                
+                // Analytics
+                analytics_title: "تحليلات المنصة",
+                analytics_subtitle: "مقاييس الأداء والرؤى",
+                total_disputes_30: "إجمالي النزاعات (30 يومًا)",
+                auto_resolution: "معدل الحل التلقائي",
+                avg_resolution: "متوسط وقت الحل",
+                cost_saved: "التكلفة الموفرة (دج)",
+                dispute_types: "أنواع النزاعات",
+                resolution_outcomes: "نتائج الحل",
+                favor_buyer_stat: "لصالح المشتري",
+                favor_merchant_stat: "لصالح التاجر",
+                manual_review_stat: "مراجعة يدوية",
+                
+                // Status
+                status_pending: "قيد الانتظار",
+                status_analyzing: "تحليل الذكاء الاصطناعي",
+                status_resolved: "تم الحل",
+                status_manual: "مراجعة يدوية",
+                
+                // Success messages
+                success_submitted: "تم تقديم النزاع بنجاح",
+                success_analyzing: "تم استلام نزاعك وجاري تحليله بواسطة نظام الذكاء الاصطناعي الخاص بنا.",
+                reference: "المرجع",
+                next_steps: "الخطوات التالية",
+                step_ai: "تحليل الذكاء الاصطناعي قيد التقدم (2-5 دقائق)",
+                step_comparison: "مقارنة الأدلة مع صور التاجر",
+                step_decision: "قرار تلقائي أو تصعيد للمراجعة اليدوية",
+                sms_notification: "ستتلقى إشعارًا عبر الرسائل القصيرة خلال 24 ساعة مع النتيجة.",
+                
+                evidence_uploaded: "تم تحميل أدلة الحماية",
+                evidence_msg: "صور التعبئة الخاصة بك للطلب",
+                evidence_recorded: "صور تم تسجيلها والتحقق منها.",
+                now_protected: "أنت الآن محمي ضد نزاعات التوصيل لهذا الطلب",
+                auto_arbitration: "سيتم استخدام الأدلة للتحكيم التلقائي إذا لزم الأمر",
+                
+                // Common
+                photos: "صور",
+                risk_level: "مستوى المخاطر",
+                low: "منخفض",
+                medium: "متوسط",
+                high: "عالي",
+                type: "النوع",
+                status: "الحالة",
+                timeline: "الجدول الزمني",
+                processing: "جارٍ المعالجة...",
+                uploading: "جارٍ التحميل...",
+                details: "التفاصيل"
+            }
+        };
+        
+        let currentLang = 'en';
+        let demoStep = 1;
+        
+        const demoSteps = [
+            {
+                title: "Step 1: Order Placed & Shipped",
+                content: `
+                    <div class="demo-screen">
+                        <h4>📦 January 15, 2026 - 10:00 AM</h4>
+                        <div class="demo-action">
+                            <strong>✓ Ahmed places order</strong><br>
+                            Ahmed orders a Samsung Galaxy S24 from Tech Store DZ for 89,000 DZD<br>
+                            <span style="background: #fef3c7; padding: 4px 8px; border-radius: 4px; font-size: 0.9em; margin-top: 5px; display: inline-block;">
+                                💰 Payment: COD (Cash on Delivery) - No prepayment required
+                            </span>
+                        </div>
+                        <div class="demo-action">
+                            <strong>✓ Merchant prepares shipment</strong><br>
+                            Tech Store DZ packs the phone and uploads 3 photos as evidence:
+                        </div>
+                        <div class="demo-evidence">
+                            <div class="demo-evidence-item">📸</div>
+                            <div class="demo-evidence-item">📸</div>
+                            <div class="demo-evidence-item">📸</div>
+                        </div>
+                        <p style="color: #6b7280; font-size: 0.9em; margin-top: 10px;">
+                            ✓ Photos show: Phone inside box, sealed package, shipping label
+                        </p>
+                        <div class="demo-action">
+                            <strong>✓ Courier picks up package</strong><br>
+                            YalidineExpress agent Karim M. scans and confirms pickup at 2:00 PM
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Step 2: Delivery Attempt",
+                content: `
+                    <div class="demo-screen">
+                        <h4>📍 January 16, 2026 - 3:30 PM</h4>
+                        <div class="demo-action">
+                            <strong>Courier arrives at delivery address</strong><br>
+                            Address: Building 15, Apt 204, Setif
+                        </div>
+                        <div class="demo-warning">
+                            <strong>⚠️ Nobody answers the door</strong><br>
+                            Courier rings doorbell multiple times. No response from apartment 204.
+                        </div>
+                        <div class="demo-action">
+                            <strong>Courier calls Ahmed: 0551-23-45-67</strong><br>
+                            Call goes to voicemail. Courier leaves message.
+                        </div>
+                        <div class="demo-system">
+                            <strong>🚚 Courier updates system: "DELIVERED"</strong><br>
+                            Delivery agent marks package as delivered at 3:45 PM<br>
+                            Note: "Left with neighbor - Apt 203"<br>
+                            Signature: "M. Boudiaf (Neighbor)"
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Step 3: Buyer Notices Issue",
+                content: `
+                    <div class="demo-screen">
+                        <h4>⚠️ January 17, 2026 - 9:00 AM</h4>
+                        <div class="demo-action">
+                            <strong>Ahmed checks tracking</strong><br>
+                            Status shows: "Delivered - Signed by M. Boudiaf"
+                        </div>
+                        <div class="demo-warning">
+                            <strong>❌ Ahmed never received the package!</strong><br>
+                            Ahmed goes to apartment 203 and speaks with M. Boudiaf (neighbor)<br>
+                            Neighbor says: "Nobody delivered anything to me yesterday"
+                        </div>
+                        <div class="demo-action">
+                            <strong>Ahmed decides to file a dispute</strong><br>
+                            He receives SMS link from the platform to submit his case
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Step 4: Buyer Submits Dispute",
+                content: `
+                    <div class="demo-screen">
+                        <h4>📱 Ahmed's Dispute Submission</h4>
+                        <div class="demo-system">
+                            <strong>Opens dispute via SMS link</strong>
+                        </div>
+                        <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin: 15px 0;">
+                            <strong>Dispute Form Filled:</strong><br><br>
+                            Phone: 0551-23-45-67 ✓<br>
+                            ID Card: Uploaded (National ID) ✓<br>
+                            Issue Type: Package Not Delivered ✓<br>
+                            Evidence Photos: 2 uploaded ✓
+                            <div class="demo-evidence" style="margin-top: 15px;">
+                                <div class="demo-evidence-item">📸</div>
+                                <div class="demo-evidence-item">📸</div>
+                            </div>
+                            <p style="color: #6b7280; font-size: 0.9em; margin-top: 10px;">
+                                Photo 1: Empty mailbox<br>
+                                Photo 2: Conversation screenshot with neighbor
+                            </p>
+                            <strong>Details:</strong> "Package marked as delivered to my neighbor but neighbor confirms he never received it. I was home all day yesterday."
+                        </div>
+                        <div class="demo-action">
+                            <strong>✓ Dispute Submitted</strong><br>
+                            Dispute ID: DIS-1847<br>
+                            Time: 9:23 AM<br>
+                            Status: Under Review
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Step 5: AI Analysis Begins",
+                content: `
+                    <div class="demo-screen">
+                        <h4>🤖 Automatic AI Analysis (2 minutes)</h4>
+                        <div class="demo-system">
+                            <strong>AI System Processing...</strong>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: white; padding: 25px; border-radius: 12px; margin: 20px 0;">
+                            <h4 style="color: white; margin-bottom: 20px;">AI Analysis Results</h4>
+                            
+                            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                                <strong>Buyer Credibility Check:</strong><br>
+                                • Account age: 8 months ✓<br>
+                                • Previous orders: 12 ✓<br>
+                                • Previous disputes: 0 ✓<br>
+                                • Risk score: LOW (15/100) ✓
+                            </div>
+                            
+                            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                                <strong>Evidence Comparison:</strong><br>
+                                • Merchant photos: 3 (packing evidence) ✓<br>
+                                • Buyer photos: 2 (no package received) ✓<br>
+                                • Delivery signature: Neighbor (M. Boudiaf) ⚠️<br>
+                                • Buyer claims neighbor denied receiving: ⚠️
+                            </div>
+                            
+                            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                                <strong>Delivery Data Analysis:</strong><br>
+                                • GPS location: Correct address ✓<br>
+                                • Time: 3:45 PM ✓<br>
+                                • Signature required: YES ✓<br>
+                                • Signed by: Different person (neighbor) ⚠️<br>
+                                • Buyer phone call attempt: Failed ⚠️
+                            </div>
+                            
+                            <div style="background: #f59e0b; padding: 15px; border-radius: 8px; color: white;">
+                                <strong>⚠️ CONFIDENCE SCORE: 68%</strong><br>
+                                Recommendation: MANUAL REVIEW REQUIRED<br>
+                                Reason: Conflicting neighbor testimony
+                            </div>
+                        </div>
+                        <div class="demo-system">
+                            <strong>✓ AI Analysis Complete</strong><br>
+                            Case escalated to manual review due to medium confidence
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Step 6: Platform Admin Review",
+                content: `
+                    <div class="demo-screen">
+                        <h4>👤 Admin Manual Review</h4>
+                        <div class="demo-system">
+                            <strong>Case assigned to Admin: Sarah K.</strong><br>
+                            Time: 9:30 AM (7 minutes after submission)
+                        </div>
+                        
+                        <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                            <strong>Admin Reviews:</strong><br><br>
+                            
+                            ✓ Buyer's evidence (2 photos)<br>
+                            ✓ Merchant's packing photos (3 photos)<br>
+                            ✓ Delivery signature (neighbor's name)<br>
+                            ✓ GPS delivery location<br>
+                            ✓ Buyer's dispute history (clean record)<br>
+                            ✓ AI confidence score (68%)
+                        </div>
+                        
+                        <div class="demo-action">
+                            <strong>Admin Action: Request Additional Verification</strong><br>
+                            SMS sent to neighbor (M. Boudiaf) at 9:35 AM:<br>
+                            "Did you receive a package for Ahmed Benali (Apt 204) on January 16?"
+                        </div>
+                        
+                        <div class="demo-system">
+                            <strong>Neighbor Response (10:05 AM):</strong><br>
+                            "No, I did not receive any package. Nobody came to my door."
+                        </div>
+                        
+                        <div class="demo-action">
+                            <strong>Admin contacts courier company</strong><br>
+                            YalidineExpress investigates with delivery agent Karim M.
+                        </div>
+                        
+                        <div class="demo-warning">
+                            <strong>Delivery Agent admits error (10:30 AM):</strong><br>
+                            "I was rushed and marked it as delivered when nobody answered. I returned the package to the warehouse. I apologize for the incorrect status update."
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Step 7: Decision Made",
+                content: `
+                    <div class="demo-screen">
+                        <h4>✅ Final Decision</h4>
+                        
+                        <div style="background: #f0fdf4; border: 3px solid #22c55e; padding: 25px; border-radius: 12px; margin: 20px 0;">
+                            <h4 style="color: #065f46; margin-bottom: 15px;">DECISION: FAVOR BUYER</h4>
+                            
+                            <strong>Reasoning:</strong><br>
+                            • Buyer has clean record (0 previous disputes) ✓<br>
+                            • Neighbor confirmed no package received ✓<br>
+                            • Delivery agent admitted error ✓<br>
+                            • Package confirmed at warehouse ✓<br>
+                            • Evidence supports buyer's claim ✓<br><br>
+                            
+                            <strong>Actions Taken:</strong><br>
+                            1. Order status: Changed to "Failed Delivery - Re-attempting"<br>
+                            2. Package will be re-delivered within 24 hours (no extra charge)<br>
+                            3. Delivery company pays merchant's holding cost (500 DZD/day)<br>
+                            4. Agent marked for retraining<br>
+                            5. Merchant NOT penalized (followed correct process)<br><br>
+                            
+                            <strong>💰 COD Payment Protected:</strong><br>
+                            • This is a Cash on Delivery (COD) order<br>
+                            • Buyer hasn't paid yet - payment on successful delivery only<br>
+                            • No refund needed - just ensure proper delivery<br>
+                        </div>
+                        
+                        <div class="demo-system">
+                            <strong>Decision Time:</strong> 10:45 AM<br>
+                            <strong>Total Resolution Time:</strong> 1 hour 22 minutes<br>
+                            <strong>Manual Review Time:</strong> 1 hour 15 minutes
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Step 8: Notifications & Closure",
+                content: `
+                    <div class="demo-screen">
+                        <h4>📨 All Parties Notified</h4>
+                        
+                        <div class="demo-action">
+                            <strong>SMS to Ahmed (Buyer) - 10:47 AM:</strong><br>
+                            "Your dispute DIS-1847 has been RESOLVED in your favor. ✅ Package will be re-delivered tomorrow at no extra charge. Payment on delivery only. Thank you for your patience!"
+                        </div>
+                        
+                        <div class="demo-action">
+                            <strong>Email to Tech Store DZ (Merchant) - 10:47 AM:</strong><br>
+                            "Dispute DIS-1847 resolved in buyer's favor. Your product will be re-delivered (you followed correct packing procedures). Delivery company will cover holding costs (500 DZD). No penalty to your account."
+                        </div>
+                        
+                        <div class="demo-action">
+                            <strong>Alert to YalidineExpress (Courier) - 10:48 AM:</strong><br>
+                            "Dispute DIS-1847 resolved. Decision: Failed delivery due to agent error. You are responsible for: 1) Re-delivery within 24h, 2) Merchant holding cost (500 DZD), 3) Agent retraining required. Package #5847 ready at warehouse."
+                        </div>
+                        
+                        <div style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: white; padding: 25px; border-radius: 12px; margin: 25px 0;">
+                            <h4 style="color: white; margin-bottom: 20px;">📊 Case Summary</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div>
+                                    <strong>Total Time:</strong> 1h 22min<br>
+                                    <strong>AI Processing:</strong> 2min<br>
+                                    <strong>Manual Review:</strong> 1h 15min<br>
+                                    <strong>Notifications:</strong> 5min
+                                </div>
+                                <div>
+                                    <strong>Outcome:</strong> Buyer Favored<br>
+                                    <strong>Payment Type:</strong> COD (Cash on Delivery)<br>
+                                    <strong>Resolution:</strong> Re-delivery scheduled<br>
+                                    <strong>Cost to Courier:</strong> 500 DZD
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="demo-system">
+                            <strong>✅ Case Closed</strong><br>
+                            All parties satisfied. Trust maintained. Issue resolved fairly.
+                        </div>
+                        
+                        <div style="background: #f0fdf4; padding: 20px; border-radius: 8px; margin-top: 25px;">
+                            <strong>💡 Platform Benefits Demonstrated:</strong><br>
+                            ✓ Fast resolution (under 2 hours)<br>
+                            ✓ Evidence-based decision<br>
+                            ✓ Fair to all parties<br>
+                            ✓ COD payment protected (buyer pays only on delivery)<br>
+                            ✓ Reduced customer service workload<br>
+                            ✓ Automatic notifications<br>
+                            ✓ Complete transparency<br>
+                            ✓ Trust maintained in e-commerce ecosystem
+                        </div>
+                    </div>
+                `
+            }
+        ];
+        
+        function demoNextStep() {
+            if (demoStep < demoSteps.length) {
+                demoStep++;
+                updateDemoDisplay();
+            }
+        }
+        
+        function demoPrevStep() {
+            if (demoStep > 1) {
+                demoStep--;
+                updateDemoDisplay();
+            }
+        }
+        
+        function demoRestart() {
+            demoStep = 1;
+            updateDemoDisplay();
+        }
+        
+        function updateDemoDisplay() {
+            const content = document.getElementById('demo-content');
+            const currentStepEl = document.getElementById('current-step');
+            const prevBtn = document.getElementById('demo-prev');
+            const nextBtn = document.getElementById('demo-next');
+            const restartBtn = document.getElementById('demo-restart');
+            
+            if (!content) return;
+            
+            // Update content
+            const step = demoSteps[demoStep - 1];
+            content.innerHTML = `
+                <h3 style="color: #1e3a8a; margin-bottom: 20px;">${step.title}</h3>
+                ${step.content}
+            `;
+            
+            // Update progress
+            currentStepEl.textContent = demoStep;
+            
+            // Update indicators
+            for (let i = 1; i <= 8; i++) {
+                const indicator = document.getElementById(`step-indicator-${i}`);
+                if (indicator) {
+                    indicator.classList.remove('active', 'completed');
+                    if (i < demoStep) {
+                        indicator.classList.add('completed');
+                    } else if (i === demoStep) {
+                        indicator.classList.add('active');
+                    }
+                }
+            }
+            
+            // Update buttons
+            if (prevBtn) prevBtn.style.display = demoStep > 1 ? 'block' : 'none';
+            if (nextBtn) nextBtn.style.display = demoStep < demoSteps.length ? 'block' : 'none';
+            if (restartBtn) restartBtn.style.display = demoStep === demoSteps.length ? 'block' : 'none';
+            
+            // Scroll to top of content
+            if (content) content.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        // Tracking System
+        function trackOrder() {
+            const orderId = document.getElementById('trackingOrderId').value;
+            
+            if (!orderId) {
+                alert('Please enter an order number');
+                return;
+            }
+            
+            // Show tracking results
+            document.getElementById('trackingResults').style.display = 'block';
+            
+            // Simulate real-time GPS updates
+            startGPSSimulation();
+            
+            // Scroll to results
+            document.getElementById('trackingResults').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        let gpsInterval;
+        let courierPosition = { left: 330, top: 130 };
+        let updateCounter = 0;
+        
+        function startGPSSimulation() {
+            // Clear any existing interval
+            if (gpsInterval) clearInterval(gpsInterval);
+            
+            // Update GPS every 3 seconds
+            gpsInterval = setInterval(() => {
+                updateCounter++;
+                
+                // Move courier marker closer to destination
+                const marker = document.getElementById('courierMarker');
+                if (marker) {
+                    courierPosition.left += 5;
+                    courierPosition.top -= 3;
+                    marker.style.left = courierPosition.left + 'px';
+                    marker.style.top = courierPosition.top + 'px';
+                    
+                    // Update distance
+                    const distance = (2.5 - (updateCounter * 0.2)).toFixed(1);
+                    if (distance > 0) {
+                        marker.querySelector('div:last-child').textContent = `📍 Karim M. - ${distance} km away`;
+                    } else {
+                        marker.querySelector('div:last-child').textContent = `📍 Karim M. - Arriving now!`;
+                        clearInterval(gpsInterval);
+                    }
+                }
+                
+                // Update "last updated" time
+                const lastUpdate = document.getElementById('lastUpdate');
+                if (lastUpdate) {
+                    const seconds = updateCounter * 3;
+                    if (seconds < 60) {
+                        lastUpdate.textContent = `${seconds} sec ago`;
+                    } else {
+                        lastUpdate.textContent = `${Math.floor(seconds / 60)} min ago`;
+                    }
+                }
+            }, 3000);
+        }
+        
+        function showTerms(e) {
+            e.preventDefault();
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.onclick = (ev) => { if (ev.target === modal) modal.remove(); };
+            
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Terms & Conditions</h2>
+                        <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>1. Acceptance of Terms</h3>
+                        <p>By using this dispute resolution platform, you agree to these terms and conditions.</p>
+                        
+                        <h3>2. Dispute Submission</h3>
+                        <p>All disputes must be submitted with valid evidence including:</p>
+                        <ul>
+                            <li>Valid national ID or identification document</li>
+                            <li>Phone number for verification</li>
+                            <li>Photographic evidence of the issue</li>
+                            <li>Order details</li>
+                        </ul>
+                        
+                        <h3>3. Resolution Process</h3>
+                        <p>Disputes are resolved through:</p>
+                        <ul>
+                            <li>AI-powered analysis (89% of cases)</li>
+                            <li>Manual review by neutral administrators (11% of cases)</li>
+                            <li>Evidence-based decision making</li>
+                        </ul>
+                        
+                        <h3>4. Decision Binding</h3>
+                        <p>Decisions made by the platform are final and binding for all parties involved.</p>
+                        
+                        <h3>5. Fraud Prevention</h3>
+                        <p>Any attempt to submit fraudulent claims will result in permanent ban from the platform.</p>
+                        
+                        <h3>6. Data Usage</h3>
+                        <p>Submitted evidence and personal information will be used solely for dispute resolution purposes.</p>
+                        
+                        <p><em>Last updated: January 23, 2026</em></p>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        function showPrivacy(e) {
+            e.preventDefault();
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.onclick = (ev) => { if (ev.target === modal) modal.remove(); };
+            
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Privacy Policy</h2>
+                        <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Information We Collect</h3>
+                        <p>We collect the following information for dispute resolution:</p>
+                        <ul>
+                            <li>National ID / Identification documents</li>
+                            <li>Phone numbers for SMS verification</li>
+                            <li>Email addresses (optional)</li>
+                            <li>Photographic evidence</li>
+                            <li>Order and delivery details</li>
+                        </ul>
+                        
+                        <h3>How We Use Your Information</h3>
+                        <p>Your information is used to:</p>
+                        <ul>
+                            <li>Verify your identity</li>
+                            <li>Process and resolve disputes</li>
+                            <li>Send SMS/email notifications</li>
+                            <li>Prevent fraud</li>
+                            <li>Improve our AI resolution system</li>
+                        </ul>
+                        
+                        <h3>Data Security</h3>
+                        <p>All personal data is:</p>
+                        <ul>
+                            <li>Encrypted during transmission and storage</li>
+                            <li>Stored on secure servers</li>
+                            <li>Accessible only to authorized personnel</li>
+                            <li>Retained only as long as necessary</li>
+                        </ul>
+                        
+                        <h3>Your Rights</h3>
+                        <p>You have the right to:</p>
+                        <ul>
+                            <li>Access your personal data</li>
+                            <li>Request data correction</li>
+                            <li>Request data deletion (after dispute resolution)</li>
+                            <li>Opt-out of email notifications</li>
+                        </ul>
+                        
+                        <h3>Third Party Sharing</h3>
+                        <p>We do not share your personal information with third parties except:</p>
+                        <ul>
+                            <li>Delivery companies (only for active disputes)</li>
+                            <li>Merchants (only for active disputes)</li>
+                            <li>As required by Algerian law</li>
+                        </ul>
+                        
+                        <h3>Contact</h3>
+                        <p>For privacy concerns, contact: privacy@disputeplatform.dz</p>
+                        
+                        <p><em>Last updated: January 23, 2026</em></p>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        function downloadDisputeReceipt(disputeId, phone, reason) {
+            // Simple text-based receipt download
+            const date = new Date().toLocaleString();
+            const receiptText = `
+==============================================
+    DELIVERY DISPUTE RECEIPT
+==============================================
+
+Dispute Reference: ${disputeId}
+Order Number: ORD-1235
+Date Submitted: ${date}
+
+BUYER INFORMATION:
+Phone Number: ${phone}
+
+DISPUTE DETAILS:
+Type: ${formatType(reason)}
+Status: Under Review
+
+NEXT STEPS:
+1. AI analysis (2-5 minutes)
+2. ID verification
+3. Evidence comparison
+4. Resolution decision
+
+NOTIFICATIONS:
+You will receive SMS updates at ${phone}
+
+IMPORTANT:
+- This dispute is being processed
+- Expected resolution: Within 24 hours
+- Decision is final and binding
+
+For inquiries: support@disputeplatform.dz
+==============================================
+            `.trim();
+            
+            // Create and download
+            const blob = new Blob([receiptText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dispute-receipt-${disputeId}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function changeLanguage(lang) {
+            currentLang = lang;
+            
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Set RTL for Arabic
+            if (lang === 'ar') {
+                document.documentElement.setAttribute('dir', 'rtl');
+                document.body.setAttribute('dir', 'rtl');
+            } else {
+                document.documentElement.setAttribute('dir', 'ltr');
+                document.body.setAttribute('dir', 'ltr');
+            }
+            
+            // Update all translations
+            document.querySelectorAll('[data-i18n]').forEach(elem => {
+                const key = elem.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    elem.textContent = translations[lang][key];
+                }
+            });
+            
+            // Update dynamic content
+            updateAllViews();
+        }
+        
+        function t(key) {
+            return translations[currentLang][key] || translations['en'][key] || key;
+        }
+        
+        // Database
+        let disputes = [];
+        let protectedOrders = [];
+        
+        // Initialize sample data
+        function initData() {
+            disputes = [
+                {
+                    id: 'DIS-1001',
+                    orderId: 'ORD-1235',
+                    buyer: '0551-XX-XX-12',
+                    merchant: 'Tech Store DZ',
+                    type: 'not-delivered',
+                    status: 'analyzing',
+                    buyerPhotos: 2,
+                    merchantPhotos: 3,
+                    createdAt: new Date(Date.now() - 2 * 3600000),
+                    aiScore: 87,
+                    riskLevel: 'low'
+                },
+                {
+                    id: 'DIS-1002',
+                    orderId: 'ORD-1178',
+                    buyer: '0661-XX-XX-45',
+                    merchant: 'Fashion Hub',
+                    type: 'damaged',
+                    status: 'manual-review',
+                    buyerPhotos: 4,
+                    merchantPhotos: 0,
+                    createdAt: new Date(Date.now() - 5 * 3600000),
+                    aiScore: 62,
+                    riskLevel: 'medium'
+                }
+            ];
+            
+            protectedOrders = [
+                { orderId: 'ORD-1240', photos: 3, uploadedAt: new Date(Date.now() - 1 * 3600000) },
+                { orderId: 'ORD-1239', photos: 2, uploadedAt: new Date(Date.now() - 4 * 3600000) }
+            ];
+            
+            updateAllViews();
+        }
+        
+        function showScreen(screenId, button) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(screenId).classList.add('active');
+            button.classList.add('active');
+            
+            if (screenId === 'platform-admin') {
+                renderAdminView();
+            }
+        }
+        
+        function handleDisputeReason() {
+            const reason = document.getElementById('disputeReason').value;
+            const deliveryForm = document.getElementById('deliveryForm');
+            const qualityWarning = document.getElementById('qualityWarning');
+            const disputeSuccess = document.getElementById('disputeSuccess');
+            
+            disputeSuccess.style.display = 'none';
+            
+            if (reason === 'quality') {
+                deliveryForm.style.display = 'none';
+                qualityWarning.style.display = 'block';
+            } else if (reason) {
+                deliveryForm.style.display = 'block';
+                qualityWarning.style.display = 'none';
+            } else {
+                deliveryForm.style.display = 'none';
+                qualityWarning.style.display = 'none';
+            }
+        }
+        
+        function previewBuyerPhotos() {
+            const files = document.getElementById('disputePhotos').files;
+            const preview = document.getElementById('buyerPreview');
+            preview.innerHTML = '';
+            
+            Array.from(files).slice(0, 6).forEach(file => {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.className = 'preview-img';
+                preview.appendChild(img);
+            });
+        }
+        
+        function previewBuyerId() {
+            const file = document.getElementById('buyerId').files[0];
+            const preview = document.getElementById('idPreview');
+            preview.innerHTML = '';
+            
+            if (file) {
+                if (file.type.startsWith('image/')) {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    img.style.cssText = 'max-width: 300px; max-height: 200px; border-radius: 8px; border: 2px solid #e5e7eb;';
+                    preview.appendChild(img);
+                } else {
+                    preview.innerHTML = `<div style="padding: 10px; background: #f0fdf4; border: 2px solid #22c55e; border-radius: 8px; color: #166534;">✓ ${file.name} uploaded</div>`;
+                }
+            }
+        }
+        
+        document.getElementById('merchantPhotos')?.addEventListener('change', function() {
+            const files = this.files;
+            const preview = document.getElementById('merchantPreview');
+            preview.innerHTML = '';
+            
+            Array.from(files).slice(0, 6).forEach(file => {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.className = 'preview-img';
+                preview.appendChild(img);
+            });
+        });
+        
+        document.getElementById('buyerDisputeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const reason = document.getElementById('disputeReason').value;
+            const phone = document.getElementById('buyerPhone').value;
+            const idCard = document.getElementById('buyerId').files[0];
+            const photos = document.getElementById('disputePhotos').files;
+            
+            if (reason && phone && idCard && photos.length > 0) {
+                const btn = this.querySelector('button[type="submit"]');
+                btn.innerHTML = `<span class="loading"></span> ${t('processing')}`;
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    const disputeId = 'DIS-' + (1000 + disputes.length + 1);
+                    
+                    const successDiv = document.getElementById('disputeSuccess');
+                    successDiv.style.display = 'block';
+                    successDiv.innerHTML = `
+                        <div class="success-message">
+                            <h3>✅ ${t('success_submitted')}</h3>
+                            <p>
+                                ${t('success_analyzing')}<br><br>
+                                <strong>${t('reference')}: ${disputeId}</strong><br>
+                                <strong>${t('phone_number')}: ${phone}</strong><br><br>
+                                <strong>${t('next_steps')}:</strong><br>
+                                1. ${t('step_ai')}<br>
+                                2. ID verification in progress<br>
+                                3. ${t('step_comparison')}<br>
+                                4. ${t('step_decision')}<br><br>
+                                ${t('sms_notification')}
+                            </p>
+                            <button class="btn btn-secondary" onclick="downloadDisputeReceipt('${disputeId}', '${phone}', '${reason}')" style="margin-top: 20px;">
+                                📄 Download Receipt (PDF)
+                            </button>
+                        </div>
+                    `;
+                    
+                    disputes.push({
+                        id: disputeId,
+                        orderId: 'ORD-1235',
+                        buyer: phone,
+                        merchant: 'Tech Store DZ',
+                        type: reason,
+                        status: 'analyzing',
+                        buyerPhotos: photos.length,
+                        merchantPhotos: 0,
+                        createdAt: new Date(),
+                        aiScore: null,
+                        riskLevel: 'low',
+                        hasId: true
+                    });
+                    
+                    this.reset();
+                    document.getElementById('deliveryForm').style.display = 'none';
+                    document.getElementById('idPreview').innerHTML = '';
+                    document.getElementById('buyerPreview').innerHTML = '';
+                    btn.innerHTML = t('submit_btn');
+                    btn.disabled = false;
+                    
+                    updateAllViews();
+                }, 1500);
+            }
+        });
+        
+        document.getElementById('merchantUploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const orderId = document.getElementById('merchantOrderId').value;
+            const photos = document.getElementById('merchantPhotos').files;
+            
+            if (orderId && photos.length > 0) {
+                const btn = this.querySelector('button[type="submit"]');
+                btn.innerHTML = `<span class="loading"></span> ${t('uploading')}`;
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    protectedOrders.unshift({
+                        orderId: orderId,
+                        photos: photos.length,
+                        uploadedAt: new Date()
+                    });
+                    
+                    const successDiv = document.getElementById('merchantSuccess');
+                    successDiv.style.display = 'block';
+                    successDiv.innerHTML = `
+                        <div class="success-message">
+                            <h3>✅ ${t('evidence_uploaded')}</h3>
+                            <p>
+                                ${t('evidence_msg')} <strong>${orderId}</strong> have been uploaded.<br><br>
+                                ${photos.length} ${t('evidence_recorded')}<br><br>
+                                ✓ ${t('now_protected')}<br>
+                                ✓ ${t('auto_arbitration')}
+                            </p>
+                        </div>
+                    `;
+                    
+                    this.reset();
+                    document.getElementById('merchantPreview').innerHTML = '';
+                    btn.innerHTML = t('submit_evidence');
+                    btn.disabled = false;
+                    
+                    updateProtectedOrders();
+                    
+                    setTimeout(() => { successDiv.style.display = 'none'; }, 6000);
+                }, 1200);
+            }
+        });
+        
+        function updateAllViews() {
+            updateDeliveryDisputes();
+            updateProtectedOrders();
+        }
+        
+        function updateDeliveryDisputes() {
+            const container = document.getElementById('deliveryDisputes');
+            if (!container) return;
+            
+            container.innerHTML = disputes.map(d => `
+                <div class="dispute-item" onclick="viewDisputeDetails('${d.id}')">
+                    <div class="dispute-header">
+                        <span class="dispute-id">${d.id}</span>
+                        <span class="status-badge status-${d.status}">${formatStatus(d.status)}</span>
+                    </div>
+                    <div style="color: #6b7280; font-size: 0.95em; margin-top: 8px;">
+                        Order: <strong>${d.orderId}</strong> | ${formatType(d.type)}<br>
+                        Buyer Photos: ${d.buyerPhotos} | Merchant Photos: ${d.merchantPhotos}<br>
+                        ${d.aiScore ? `AI Confidence: ${d.aiScore}%` : 'Analyzing...'}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function updateProtectedOrders() {
+            const container = document.getElementById('protectedOrders');
+            if (!container) return;
+            
+            if (protectedOrders.length === 0) {
+                container.innerHTML = `<p style="text-align: center; color: #6b7280; padding: 20px;" data-i18n="no_orders">${t('no_orders')}</p>`;
+                return;
+            }
+            
+            container.innerHTML = protectedOrders.map(o => `
+                <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>${o.orderId}</strong><br>
+                            <span style="font-size: 0.9em; color: #6b7280;">${o.photos} ${t('photos')} ${t('photos_uploaded')} • ${formatTime(o.uploadedAt)}</span>
+                        </div>
+                        <span style="background: #d1fae5; color: #065f46; padding: 6px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600;">
+                            ✓ ${t('protected')}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function viewDisputeDetails(disputeId) {
+            const dispute = disputes.find(d => d.id === disputeId);
+            if (!dispute) return;
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px;';
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+            
+            modal.innerHTML = `
+                <div style="background: white; border-radius: 12px; padding: 40px; max-width: 800px; max-height: 90vh; overflow-y: auto; width: 100%;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <h2 style="font-size: 1.75em; color: #1a202c;">${dispute.id}</h2>
+                        <button onclick="this.closest('div[style*=fixed]').remove()" style="background: #e5e7eb; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1.2em;">×</button>
+                    </div>
+                    
+                    <div style="background: #f9fafb; padding: 20px; border-radius: 10px; margin-bottom: 25px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div><strong>Order:</strong> ${dispute.orderId}</div>
+                            <div><strong>Type:</strong> ${formatType(dispute.type)}</div>
+                            <div><strong>Merchant:</strong> ${dispute.merchant}</div>
+                            <div><strong>Status:</strong> <span class="status-badge status-${dispute.status}">${formatStatus(dispute.status)}</span></div>
+                        </div>
+                    </div>
+                    
+                    ${dispute.aiScore ? `
+                        <div class="ai-analysis">
+                            <h4>🤖 AI Analysis Results</h4>
+                            <div class="analysis-grid">
+                                <div class="analysis-item">
+                                    <strong>Confidence Score</strong>
+                                    <div class="analysis-value">${dispute.aiScore}%</div>
+                                    <div class="confidence-bar">
+                                        <div class="confidence-fill" style="width: ${dispute.aiScore}%"></div>
+                                    </div>
+                                </div>
+                                <div class="analysis-item">
+                                    <strong>Risk Level</strong>
+                                    <div class="analysis-value">${dispute.riskLevel.toUpperCase()}</div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                                <strong>Evidence Match:</strong> ${dispute.merchantPhotos > 0 ? 'Merchant photos available for comparison' : 'No merchant photos - higher risk'}
+                            </div>
+                        </div>
+                    ` : '<div class="alert alert-info">AI analysis in progress...</div>'}
+                    
+                    <div class="buyer-profile">
+                        <h4 style="margin-bottom: 15px;">Buyer Profile Analysis</h4>
+                        <div class="buyer-stats">
+                            <div class="buyer-stat">
+                                <div class="buyer-stat-value">12</div>
+                                <div class="buyer-stat-label">Total Orders</div>
+                            </div>
+                            <div class="buyer-stat">
+                                <div class="buyer-stat-value">1</div>
+                                <div class="buyer-stat-label">Past Disputes</div>
+                            </div>
+                            <div class="buyer-stat">
+                                <div class="buyer-stat-value">Low</div>
+                                <div class="buyer-stat-label">Risk Level</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 style="margin: 25px 0 15px 0;">Timeline</h4>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-time">${formatTime(dispute.createdAt)}</div>
+                                <div>Dispute submitted by buyer</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-time">${formatTime(new Date(dispute.createdAt.getTime() + 120000))}</div>
+                                <div>AI analysis started</div>
+                            </div>
+                        </div>
+                        ${dispute.aiScore ? `
+                            <div class="timeline-item">
+                                <div class="timeline-content">
+                                    <div class="timeline-time">${formatTime(new Date(dispute.createdAt.getTime() + 300000))}</div>
+                                    <div>AI analysis completed - ${dispute.aiScore}% confidence</div>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        function renderAdminView() {
+            const container = document.getElementById('adminCasesList');
+            const manualCases = disputes.filter(d => d.status === 'manual-review');
+            
+            if (manualCases.length === 0) {
+                container.innerHTML = `
+                    <div class="alert alert-success">
+                        <strong>✓ ${t('all_clear')}</strong><br>
+                        ${t('all_clear_msg')}
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = manualCases.map(d => `
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
+                        <div>
+                            <h3>${d.id}</h3>
+                            <p style="color: #6b7280; margin-top: 5px;">${t('order')} ${d.orderId} - ${formatType(d.type)}</p>
+                        </div>
+                        <span class="risk-score risk-${d.riskLevel}">${t(d.riskLevel.toUpperCase())} ${t('risk_level')}</span>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <strong>⚠️ ${t('manual_review_required')}</strong><br>
+                        ${t('ai_confidence')}: ${d.aiScore}% - ${t('below_threshold')}
+                    </div>
+                    
+                    <div class="image-comparison">
+                        <div class="image-box">
+                            <h4>${t('buyer_evidence')} (${d.buyerPhotos} ${t('photos')})</h4>
+                            <div class="image-preview-grid">
+                                ${Array(d.buyerPhotos).fill(0).map((_, i) => 
+                                    `<div class="preview-img" style="background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);"></div>`
+                                ).join('')}
+                            </div>
+                        </div>
+                        <div class="image-box">
+                            <h4>${t('merchant_evidence')} (${d.merchantPhotos} ${t('photos')})</h4>
+                            ${d.merchantPhotos > 0 ? `
+                                <div class="image-preview-grid">
+                                    ${Array(d.merchantPhotos).fill(0).map((_, i) => 
+                                        `<div class="preview-img" style="background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);"></div>`
+                                    ).join('')}
+                                </div>
+                            ` : `<p style="color: #6b7280; font-style: italic;">${t('no_merchant_photos')}</p>`}
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-success" onclick="resolveCase('${d.id}', 'buyer')">${t('favor_buyer')}</button>
+                        <button class="btn btn-danger" onclick="resolveCase('${d.id}', 'merchant')">${t('favor_merchant')}</button>
+                        <button class="btn btn-secondary" onclick="requestMoreInfo('${d.id}')">${t('request_more_info')}</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function resolveCase(disputeId, favor) {
+            if (!confirm(`Resolve this case in favor of the ${favor}?`)) return;
+            
+            const dispute = disputes.find(d => d.id === disputeId);
+            if (dispute) {
+                dispute.status = 'resolved';
+                alert(`Case ${disputeId} resolved in favor of ${favor}`);
+                renderAdminView();
+            }
+        }
+        
+        function requestMoreInfo(disputeId) {
+            alert(`Information request sent to both parties for case ${disputeId}`);
+        }
+        
+        function formatStatus(status) {
+            const map = {
+                'pending': t('status_pending'),
+                'analyzing': t('status_analyzing'),
+                'resolved': t('status_resolved'),
+                'manual-review': t('status_manual')
+            };
+            return map[status] || status;
+        }
+        
+        function formatType(type) {
+            const map = {
+                'not-delivered': t('not_delivered'),
+                'damaged': t('damaged'),
+                'wrong-status': t('wrong_status'),
+                'refused': t('refused')
+            };
+            return map[type] || type;
+        }
+        
+        function formatTime(date) {
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            
+            if (minutes < 60) return `${minutes} min ago`;
+            if (hours < 24) return `${hours}h ago`;
+            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+        }
+        
+        document.getElementById('companyRegisterForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const companyData = {
+                name: document.getElementById('companyName').value,
+                registration: document.getElementById('companyReg').value,
+                contactPerson: document.getElementById('contactPerson').value,
+                position: document.getElementById('contactPosition').value,
+                email: document.getElementById('contactEmail').value,
+                phone: document.getElementById('contactPhone').value,
+                volume: document.getElementById('monthlyVolume').value,
+                disputeRate: document.getElementById('disputeRate').value,
+                additionalInfo: document.getElementById('additionalInfo').value
+            };
+            
+            const btn = this.querySelector('button[type="submit"]');
+            btn.innerHTML = `<span class="loading"></span> ${t('processing')}`;
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                const successDiv = document.getElementById('registerSuccess');
+                successDiv.style.display = 'block';
+                successDiv.innerHTML = `
+                    <div class="success-message">
+                        <h3>✅ Registration Submitted Successfully!</h3>
+                        <p>
+                            Thank you for your interest in joining our platform.<br><br>
+                            <strong>Company:</strong> ${companyData.name}<br>
+                            <strong>Contact:</strong> ${companyData.contactPerson} (${companyData.position})<br>
+                            <strong>Email:</strong> ${companyData.email}<br><br>
+                            <strong>Next Steps:</strong><br>
+                            1. Our team will review your application within 24-48 hours<br>
+                            2. You'll receive an email with API documentation<br>
+                            3. We'll schedule an onboarding call<br>
+                            4. Integration and testing phase (3-5 days)<br>
+                            5. Go live and start resolving disputes!<br><br>
+                            Questions? Contact us at: onboarding@disputeplatform.dz
+                        </p>
+                    </div>
+                `;
+                
+                this.reset();
+                btn.innerHTML = t('submit_registration');
+                btn.disabled = false;
+                
+                // Scroll to success message
+                successDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 1500);
+        });
+        
+        // Initialize
+        initData();
+    </script>
+</body>
+</html>
